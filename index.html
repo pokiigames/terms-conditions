@@ -2,267 +2,1525 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms and Conditions - [Croom X]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Slide Puzzle</title>
     <style>
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            user-select: none;
         }
         
         body {
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43);
             color: white;
-            padding: 40px 20px;
-            text-align: center;
-            border-radius: 0 0 20px 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
+            min-height: 100vh;
+            overflow: hidden;
+            touch-action: manipulation;
         }
         
-        header h1 {
-            font-size: 2.5rem;
+        /* Page Containers */
+        .page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+        
+        .page.active {
+            display: flex;
+        }
+        
+        /* Home Page */
+        #home-page {
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .logo {
+            margin-bottom: 40px;
+        }
+        
+        .logo-text {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #00c9ff, #92fe9d);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo-subtitle {
+            font-size: 1.2rem;
+            color: #a8d0e6;
+            opacity: 0.8;
+        }
+        
+        .home-buttons {
+            width: 100%;
+            max-width: 300px;
+            margin-top: 20px;
+        }
+        
+        .home-btn {
+            width: 100%;
+            padding: 20px;
+            margin: 12px 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .home-btn:active {
+            transform: scale(0.97);
+        }
+        
+        .play-btn {
+            background: linear-gradient(45deg, #00c9ff, #92fe9d);
+            color: #0f2027;
+            box-shadow: 0 6px 20px rgba(0, 201, 255, 0.4);
+        }
+        
+        .levels-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .sound-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            font-size: 1.2rem;
+            padding: 16px;
+        }
+        
+        .sound-btn.active {
+            background: rgba(0, 201, 255, 0.3);
+            border-color: #00c9ff;
+        }
+        
+        .btn-icon {
+            font-size: 1.6rem;
+        }
+        
+        /* Game Page */
+        #game-page {
+            background: linear-gradient(135deg, #0f2027, #203a43);
+        }
+        
+        /* Game Header */
+        .game-header {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .game-title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            background: linear-gradient(to right, #00c9ff, #92fe9d);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .back-btn {
+            background: none;
+            border: none;
+            color: #00c9ff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.15);
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #92fe9d;
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: #a8d0e6;
+            margin-top: 2px;
+        }
+        
+        /* Puzzle Container */
+        .puzzle-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            max-height: 70vh;
+        }
+        
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 6px;
+            width: 90vw;
+            max-width: 360px;
+            height: 90vw;
+            max-height: 360px;
+            margin: 0 auto 20px;
+        }
+        
+        .tile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            background: 
+                linear-gradient(45deg, rgba(0,0,0,0.1) 25%, transparent 25%),
+                linear-gradient(-45deg, rgba(0,0,0,0.1) 25%, transparent 25%),
+                linear-gradient(135deg, #8B6914, #D2A44E);
+            background-size: 20px 20px, 20px 20px, 100% 100%;
+            background-position: 0 0, 0 10px, 0 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: 
+                0 3px 6px rgba(0, 0, 0, 0.3),
+                inset 0 1px 2px rgba(255, 255, 255, 0.3),
+                inset 0 -1px 2px rgba(0, 0, 0, 0.2);
+            border: 2px solid #6B4E1B;
+            color: #3E2C0A;
+            text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tile::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 15px,
+                rgba(0, 0, 0, 0.05) 15px,
+                rgba(0, 0, 0, 0.05) 30px
+            );
+            pointer-events: none;
+        }
+        
+        .tile::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2), transparent 60%);
+            pointer-events: none;
+        }
+        
+        @media (max-width: 350px) {
+            .tile {
+                font-size: 1.8rem;
+            }
+        }
+        
+        .tile:active {
+            transform: scale(0.95);
+            background: 
+                linear-gradient(45deg, rgba(0,0,0,0.15) 25%, transparent 25%),
+                linear-gradient(-45deg, rgba(0,0,0,0.15) 25%, transparent 25%),
+                linear-gradient(135deg, #7A5E11, #C49644);
+            box-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.3),
+                inset 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tile.empty {
+            background: transparent;
+            border: 2px dashed #6B4E1B;
+            box-shadow: none;
+            cursor: default;
+        }
+        
+        .tile.empty::before,
+        .tile.empty::after {
+            display: none;
+        }
+        
+        .tile.empty:active {
+            transform: none;
+            background: transparent;
+        }
+        
+        .tile.correct {
+            background: 
+                linear-gradient(45deg, rgba(0,0,0,0.1) 25%, transparent 25%),
+                linear-gradient(-45deg, rgba(0,0,0,0.1) 25%, transparent 25%),
+                linear-gradient(135deg, #A07828, #E6B85C);
+            border-color: #8B6914;
+            color: #2C1E05;
+            box-shadow: 
+                0 3px 6px rgba(0, 0, 0, 0.3),
+                inset 0 1px 2px rgba(255, 255, 255, 0.4),
+                inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+                0 0 0 2px rgba(210, 164, 78, 0.5);
+        }
+        
+        /* Progress */
+        .progress-container {
+            width: 100%;
+            max-width: 360px;
+            margin-top: 15px;
+            padding: 0 10px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #00c9ff, #92fe9d);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #a8d0e6;
+        }
+        
+        /* Controls */
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .control-btn {
+            padding: 18px 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            background: linear-gradient(to right, #00c9ff, #92fe9d);
+            border: none;
+            border-radius: 15px;
+            color: #0f2027;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .control-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* Shuffle Message */
+        .shuffle-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            z-index: 1000;
+            border: 2px solid #00c9ff;
+            display: none;
+            max-width: 300px;
+            width: 80%;
+        }
+        
+        .shuffle-message.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        .shuffle-message-text {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #92fe9d;
+        }
+        
+        /* Level Selector Page */
+        #levels-page {
+            background: linear-gradient(135deg, #0f2027, #203a43);
+        }
+        
+        .levels-header {
+            padding: 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .levels-title {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(to right, #00c9ff, #92fe9d);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
             margin-bottom: 10px;
         }
         
-        header p {
-            font-size: 1.1rem;
+        .levels-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        
+        @media (max-width: 380px) {
+            .levels-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .level-number {
+                font-size: 1.8rem;
+            }
+            
+            .level-name {
+                font-size: 0.7rem;
+            }
+        }
+        
+        .level-btn {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 15px;
+            position: relative;
+        }
+        
+        .level-btn:active:not(.locked) {
+            transform: scale(0.95);
+        }
+        
+        .level-btn.active {
+            background: linear-gradient(45deg, #00c9ff, #92fe9d);
+            color: #0f2027;
+        }
+        
+        .level-btn.completed::after {
+            content: '✓';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            color: #92fe9d;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .level-btn.locked {
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.3);
+            cursor: not-allowed;
+        }
+        
+        .level-btn.locked::after {
+            content: '🔒';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 1rem;
+        }
+        
+        .level-number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .level-name {
+            font-size: 0.8rem;
             opacity: 0.9;
         }
         
-        .last-updated {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #666;
-            font-style: italic;
-        }
-        
-        .content-card {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            margin-bottom: 30px;
-        }
-        
-        h2 {
-            color: #2c3e50;
-            margin: 25px 0 15px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-        
-        h2:first-child {
-            margin-top: 0;
-        }
-        
-        p {
-            margin-bottom: 15px;
-        }
-        
-        ul {
-            margin-left: 20px;
-            margin-bottom: 15px;
-        }
-        
-        li {
-            margin-bottom: 8px;
-        }
-        
-        .privacy-section {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 12px;
-            text-align: center;
-            margin: 30px 0;
-        }
-        
-        .privacy-section h3 {
-            margin-bottom: 15px;
-            font-size: 1.5rem;
-        }
-        
-        .privacy-button {
-            display: inline-block;
-            background: white;
-            color: #f5576c;
-            padding: 12px 30px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 10px;
+        /* Win Message */
+        .win-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .privacy-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-        }
-        
-        .contact-section {
-            background-color: #e8f4fc;
-            padding: 25px;
-            border-radius: 12px;
-            text-align: center;
-            margin-top: 30px;
-        }
-        
-        .contact-email {
-            display: inline-block;
-            background: #2575fc;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-        
-        footer {
-            text-align: center;
             padding: 20px;
-            color: #666;
-            font-size: 0.9rem;
-            margin-top: 30px;
         }
         
-        .highlight {
-            background-color: #fff9e6;
+        .win-message.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .win-content {
+            background: linear-gradient(135deg, #0f2027, #203a43);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            width: 90%;
+            max-width: 350px;
+            border: 2px solid #00c9ff;
+        }
+        
+        .win-title {
+            font-size: 2rem;
+            color: #92fe9d;
+            margin-bottom: 20px;
+        }
+        
+        .win-stats {
+            margin: 20px 0;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.05);
             padding: 15px;
-            border-left: 4px solid #ffc107;
-            margin: 15px 0;
-            border-radius: 0 8px 8px 0;
+            border-radius: 10px;
         }
         
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2rem;
-            }
-            
-            .content-card {
-                padding: 20px;
+        .win-stat {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .win-stat:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .win-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .win-btn {
+            flex: 1;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .win-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .win-btn.primary {
+            background: linear-gradient(to right, #00c9ff, #92fe9d);
+            color: #0f2027;
+        }
+        
+        .win-btn.secondary {
+            background: transparent;
+            border: 2px solid #00c9ff;
+            color: #00c9ff;
+        }
+        
+        /* Level Complete Animation */
+        .level-complete-anim {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .level-complete-anim.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .level-complete-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00c9ff, #92fe9d);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: levelCompleteAnim 1.5s ease forwards;
+        }
+        
+        @keyframes levelCompleteAnim {
+            0% { transform: scale(0.5); opacity: 0; }
+            30% { transform: scale(1.2); opacity: 1; }
+            70% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.5); opacity: 0; }
+        }
+        
+        /* Hide scrollbar but keep functionality */
+        .levels-container::-webkit-scrollbar {
+            width: 0;
+            background: transparent;
+        }
+        
+        /* Hide on desktop */
+        @media (min-width: 768px) {
+            body::before {
+                content: "Please open on mobile device";
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: #0f2027;
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.5rem;
+                z-index: 10000;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>Terms and Conditions</h1>
-            <p>Please read these terms carefully before using our croom x application</p>
+    <!-- Home Page -->
+    <div id="home-page" class="page active">
+        <div class="logo">
+            <div class="logo-text">SLIDE PUZZLE</div>
+            <div class="logo-subtitle">Arrange • Solve • Win</div>
         </div>
-    </header>
+        
+        <div class="home-buttons">
+            <button class="home-btn play-btn" onclick="goToGame()">
+                <span class="btn-icon">▶</span>
+                <span>PLAY GAME</span>
+            </button>
+            
+            <button class="home-btn levels-btn" onclick="goToLevels()">
+                <span class="btn-icon">📊</span>
+                <span>SELECT LEVEL</span>
+            </button>
+            
+            <button class="home-btn sound-btn" id="sound-toggle">
+                <span class="btn-icon" id="sound-icon">🔊</span>
+                <span id="sound-text">SOUND ON</span>
+            </button>
+        </div>
+    </div>
     
-    <div class="container">
-        <div class="last-updated">
-            <strong>Last updated:</strong> October 2025
+    <!-- Game Page -->
+    <div id="game-page" class="page">
+        <div class="game-header">
+            <button class="back-btn" onclick="goToHome()">← Home</button>
+            <div class="game-title">LEVEL <span id="current-level-display">1</span></div>
+            <div style="width: 60px;"></div> <!-- Spacer for alignment -->
         </div>
         
-        <div class="content-card">
-            <h2>1. Use of the App</h2>
-            <p>Our app provides:</p>
-            <ul> 
-                <li>This Gaming App Provides Service Free of cost no fee for use of apps</li>
-                <li>Two games: Tic Tac Toe (online & offline) and 2048</li>
-                <li>A task-based reward system where users can complete daily tasks by watching rewarded ads to earn points</li>
-                <li>A leaderboard showing the top 50 players based on points</li>
-            </ul>
-            <p>The app is for entertainment purposes only. You agree to use the app in compliance with all applicable laws.</p>
-            
-            <h2>2. User Account and Sign-In</h2>
-            <ul>
-                <li>Users can sign in using Google Sign-In</li>
-                <li>We collect only basic profile data: your name, email address, profile photo, and in-app score</li>
-                <li>This data is securely stored using Google Firebase and is used only to maintain your account, leaderboard ranking, and gameplay history</li>
-                <li>We do not sell, share, or misuse your data</li>
-            </ul>
-            
-            <div class="highlight">
-                <strong>For more details on how we collect, use, and protect your data, please read our Privacy Policy.</strong>
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-value" id="move-count">0</div>
+                <div class="stat-label">MOVES</div>
             </div>
-            
-            <h2>3. User Responsibilities and Conduct</h2>
-            <p>You agree not to:</p>
-            <ul>
-                <li>Use the app for any illegal or unauthorized purpose</li>
-                <li>Attempt to hack, cheat, or manipulate the leaderboard scores</li>
-                <li>Use any automated system (like bots or scripts) to complete tasks or earn points</li>
-                <li>Upload or share any harmful or abusive content</li>
-            </ul>
-            <p>We reserve the right to ban any user who violates these rules and remove their scores from the leaderboard.</p>
-            
-            <h2>4. Reward and Gifts</h2>
-            <ul> 
-                <li>This Games purely skill based and mindtest game </li>
-                <li>Users can earn points by completing tasks such as show in games </li>
-                <li>Points have value in our Croom X games app this points show the position of player in leaderboard </li>
-                <li>We reserve the right to give rewards and gift to top 3 performing in app leaderboard</li>
-                <li>Rewards and gifts are provided external source through our official website and third party </li>
-                <li>This apps not collect money other valuable things from user side </li>
-                <li>No financial transactions or prize redemption happen within the mobile app itself </li>
-                <li>This Rewards Given to user for entertainment purposes only </li>
-            </ul>
-            
-            <h2>5. Advertisements</h2>
-            <p>Our app displays ads through Google AdMob. Ads help us maintain and improve our services. By using the app, you agree to view these advertisements as part of your experience.</p>
-            
-            <h2>6. Intellectual Property</h2>
-            <p>All game content, graphics, logos, and features within the app are owned by or licensed to us. You may not copy, modify, distribute, or use our content without permission.</p>
-            
-            <h2>7. Disclaimer and Limitation of Liability</h2>
-            <ul>
-                <li>The app and its services are provided on an "as is" and "as available" basis. We do not guarantee that the app will be uninterrupted, error-free, or free from harmful components</li>
-                <li>We are not responsible for any direct or indirect loss arising from the use of the app, including technical errors, ad availability, or reward issues</li>
-            </ul>
-            
-            <h2>8. Termination</h2>
-            <p>We may, at our sole discretion, suspend or terminate your access to the app and leaderboard if you violate these Terms and Conditions.</p>
-            
-            <h2>9. Changes to Terms</h2>
-            <p>We reserve the right to modify or update these Terms and Conditions at any time. Changes will be effective immediately upon posting in the app or website. Continued use of the app after changes means you accept the updated terms.</p>
-            
-            <h2>10. Governing Law</h2>
-            <p>These Terms shall be governed by and construed in accordance with the laws of India.</p>
-            
-            <div class="privacy-section">
-                <h3>Privacy Policy</h3>
-                <p>Learn how we collect, use, and protect your personal information</p>
-                <a href="https://onliinegames.github.io/privacy-policy/" class="privacy-button">View Privacy Policy</a>
+            <div class="stat-item">
+                <div class="stat-value" id="time">00:00</div>
+                <div class="stat-label">TIME</div>
             </div>
-            
-            <div class="contact-section">
-                <h2>11. Contact Us</h2>
-                <p>If you have any questions or concerns regarding these Terms, you can contact us at:</p>
-                <a href="mailto:pal982565@gmail.com" class="contact-email">📧 support@yourapp.com</a>
+            <div class="stat-item">
+                <div class="stat-value" id="tiles-correct">15/15</div>
+                <div class="stat-label">CORRECT</div>
             </div>
         </div>
         
-        <footer>
-            <p>&copy; 2025 [Croom X]. All rights reserved.</p>
-        </footer>
+        <div class="puzzle-container">
+            <div class="puzzle-grid" id="puzzle-grid">
+                <!-- Tiles will be generated here -->
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="progress-text">
+                    <span>PROGRESS: <span id="progress-percent">100%</span></span>
+                    <span>TARGET: <span id="target-moves">20</span> moves</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Only 2 buttons: Shuffle and Reset -->
+        <div class="controls">
+            <button class="control-btn" id="shuffle-btn">SHUFFLE</button>
+            <button class="control-btn" id="reset-btn">RESET LEVEL</button>
+        </div>
+    </div>
+    
+    <!-- Levels Page -->
+    <div id="levels-page" class="page">
+        <div class="levels-header">
+            <button class="back-btn" onclick="goToHome()">← Home</button>
+            <div class="levels-title">SELECT LEVEL</div>
+            <div style="color: #a8d0e6; font-size: 0.9rem;">Complete levels to unlock more</div>
+        </div>
+        
+        <div class="levels-container">
+            <div class="levels-grid" id="levels-grid">
+                <!-- Level buttons will be generated here -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Shuffle Required Message -->
+    <div class="shuffle-message" id="shuffle-message">
+        <div class="shuffle-message-text">Please click SHUFFLE button first to start the game!</div>
+        <button class="win-btn primary" onclick="hideShuffleMessage()">OK</button>
+    </div>
+    
+    <!-- Level Complete Animation -->
+    <div class="level-complete-anim" id="level-complete-anim">
+        <div class="level-complete-text" id="level-complete-text">LEVEL 1 COMPLETE!</div>
+    </div>
+    
+    <!-- Win Message -->
+    <div class="win-message" id="win-message">
+        <div class="win-content">
+            <h2 class="win-title" id="win-title">LEVEL COMPLETE!</h2>
+            
+            <div class="win-stats">
+                <div class="win-stat">
+                    <span>Level:</span>
+                    <span id="final-level">1</span>
+                </div>
+                <div class="win-stat">
+                    <span>Your Moves:</span>
+                    <span id="final-moves">0</span>
+                </div>
+                <div class="win-stat">
+                    <span>Target Moves:</span>
+                    <span id="final-target-moves">20</span>
+                </div>
+                <div class="win-stat">
+                    <span>Your Time:</span>
+                    <span id="final-time">00:00</span>
+                </div>
+            </div>
+            
+            <div id="performance-rating" style="color: #92fe9d; margin: 15px 0; font-size: 1.1rem;">
+                Performance: Excellent!
+            </div>
+            
+            <div class="win-buttons">
+                <button class="win-btn primary" id="next-level-btn">NEXT LEVEL</button>
+                <button class="win-btn secondary" id="home-win-btn">HOME</button>
+            </div>
+        </div>
     </div>
 
     <script>
+        // Game State
+        const gameState = {
+            size: 4,
+            emptyIndex: 15,
+            moves: 0,
+            time: 0,
+            timer: null,
+            isPlaying: false,
+            tiles: [],
+            winState: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, null],
+            currentLevel: 1,
+            unlockedLevels: 1,
+            soundEnabled: true,
+            hasBeenShuffled: false
+        };
         
+        // Difficulty Levels
+        const difficultyLevels = [
+            { level: 1, name: "Beginner", targetMoves: 20, targetTime: 60, shuffleMoves: 5 },
+            { level: 2, name: "Novice", targetMoves: 25, targetTime: 75, shuffleMoves: 8 },
+            { level: 3, name: "Learner", targetMoves: 30, targetTime: 90, shuffleMoves: 12 },
+            { level: 4, name: "Easy", targetMoves: 35, targetTime: 105, shuffleMoves: 18 },
+            { level: 5, name: "Medium", targetMoves: 40, targetTime: 120, shuffleMoves: 25 },
+            { level: 6, name: "Skilled", targetMoves: 45, targetTime: 135, shuffleMoves: 35 },
+            { level: 7, name: "Advanced", targetMoves: 50, targetTime: 150, shuffleMoves: 45 },
+            { level: 8, name: "Expert", targetMoves: 55, targetTime: 165, shuffleMoves: 55 },
+            { level: 9, name: "Master", targetMoves: 60, targetTime: 180, shuffleMoves: 65 },
+            { level: 10, name: "Legend", targetMoves: 70, targetTime: 210, shuffleMoves: 80 },
+            { level: 11, name: "Beginner+", targetMoves: 20, targetTime: 60, shuffleMoves: 85 },
+            { level: 12, name: "Novice+", targetMoves: 25, targetTime: 75, shuffleMoves: 90 },
+            { level: 13, name: "Learner+", targetMoves: 30, targetTime: 90, shuffleMoves: 91 },
+            { level: 14, name: "Easy+", targetMoves: 35, targetTime: 105, shuffleMoves: 91 },
+            { level: 15, name: "Medium+", targetMoves: 40, targetTime: 120, shuffleMoves: 92 },
+            { level: 16, name: "Skilled+", targetMoves: 45, targetTime: 135, shuffleMoves: 95 },
+            { level: 17, name: "Advanced+", targetMoves: 50, targetTime: 150, shuffleMoves: 95 },
+            { level: 18, name: "Expert+", targetMoves: 55, targetTime: 165, shuffleMoves: 98 },
+            { level: 19, name: "Master+", targetMoves: 60, targetTime: 180, shuffleMoves: 98 },
+            { level: 20, name: "Legend+", targetMoves: 70, targetTime: 210, shuffleMoves: 99 }
+        ];
         
-        // Update year in footer
-        document.querySelector('footer p').innerHTML = `&copy; ${new Date().getFullYear()} [Croom X]. All rights reserved.`;
+        // Initialize arrays for all levels
+        const totalLevels = difficultyLevels.length;
+        gameState.bestMoves = Array(totalLevels).fill(null);
+        gameState.bestTimes = Array(totalLevels).fill(null);
+        gameState.levelCompleted = Array(totalLevels).fill(false);
+        
+        // DOM Elements
+        const pages = {
+            home: document.getElementById('home-page'),
+            game: document.getElementById('game-page'),
+            levels: document.getElementById('levels-page')
+        };
+        
+        const puzzleGrid = document.getElementById('puzzle-grid');
+        const moveCountEl = document.getElementById('move-count');
+        const timeEl = document.getElementById('time');
+        const tilesCorrectEl = document.getElementById('tiles-correct');
+        const progressFill = document.getElementById('progress-fill');
+        const progressPercent = document.getElementById('progress-percent');
+        const targetMovesEl = document.getElementById('target-moves');
+        const currentLevelDisplay = document.getElementById('current-level-display');
+        const levelsGrid = document.getElementById('levels-grid');
+        const winMessage = document.getElementById('win-message');
+        const finalLevelEl = document.getElementById('final-level');
+        const finalMovesEl = document.getElementById('final-moves');
+        const finalTargetMovesEl = document.getElementById('final-target-moves');
+        const finalTimeEl = document.getElementById('final-time');
+        const performanceRating = document.getElementById('performance-rating');
+        const soundToggle = document.getElementById('sound-toggle');
+        const soundIcon = document.getElementById('sound-icon');
+        const soundText = document.getElementById('sound-text');
+        const levelCompleteAnim = document.getElementById('level-complete-anim');
+        const levelCompleteText = document.getElementById('level-complete-text');
+        const shuffleMessage = document.getElementById('shuffle-message');
+        
+        // Page Navigation
+        function showPage(pageId) {
+            Object.keys(pages).forEach(key => {
+                pages[key].classList.remove('active');
+            });
+            pages[pageId].classList.add('active');
+        }
+        
+        function goToHome() {
+            showPage('home');
+        }
+        
+        function goToGame() {
+            initGame();
+            showPage('game');
+        }
+        
+        function goToLevels() {
+            loadLevelsGrid();
+            showPage('levels');
+        }
+        
+        // Sound Toggle
+        function toggleSound() {
+            gameState.soundEnabled = !gameState.soundEnabled;
+            soundToggle.classList.toggle('active', gameState.soundEnabled);
+            soundIcon.textContent = gameState.soundEnabled ? '🔊' : '🔇';
+            soundText.textContent = gameState.soundEnabled ? 'SOUND ON' : 'SOUND OFF';
+            
+            if (gameState.soundEnabled) {
+                playSound('click');
+            }
+            
+            localStorage.setItem('slidePuzzleSound', gameState.soundEnabled);
+        }
+        
+        // Sound Effects - Enhanced winning sound
+        function playSound(type) {
+            if (!gameState.soundEnabled) return;
+            
+            try {
+                // Use Web Audio API for better performance
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                if (type === 'click') {
+                    // Simple click sound
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.value = 600;
+                    oscillator.type = 'sine';
+                    
+                    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                    
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.1);
+                }
+                else if (type === 'slide') {
+                    // Slide sound
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.value = 400;
+                    oscillator.type = 'sine';
+                    
+                    gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                    
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.2);
+                }
+                else if (type === 'win') {
+                    // Perfect victory sound - a triumphant ascending arpeggio with bass
+                    const now = audioContext.currentTime;
+                    
+                    // Create a master gain node for overall volume
+                    const masterGain = audioContext.createGain();
+                    masterGain.connect(audioContext.destination);
+                    masterGain.gain.setValueAtTime(0.3, now);
+                    
+                    // Bass note for foundation
+                    const bassOsc = audioContext.createOscillator();
+                    const bassGain = audioContext.createGain();
+                    bassOsc.connect(bassGain);
+                    bassGain.connect(masterGain);
+                    bassOsc.type = 'triangle';
+                    bassOsc.frequency.value = 130.81; // C3
+                    bassGain.gain.setValueAtTime(0.2, now);
+                    bassGain.gain.exponentialRampToValueAtTime(0.01, now + 1.2);
+                    bassOsc.start();
+                    bassOsc.stop(now + 1.2);
+                    
+                    // Main melody - triumphant arpeggio (C major)
+                    const notes = [
+                        { freq: 523.25, time: 0 },    // C5
+                        { freq: 659.25, time: 0.12 },  // E5
+                        { freq: 783.99, time: 0.24 },  // G5
+                        { freq: 1046.50, time: 0.36 }, // C6
+                        { freq: 1318.51, time: 0.5 },  // E6
+                        { freq: 1567.98, time: 0.65 }, // G6
+                        { freq: 2093.00, time: 0.85 }  // C7 (final triumphant note)
+                    ];
+                    
+                    notes.forEach((note) => {
+                        const osc = audioContext.createOscillator();
+                        const gain = audioContext.createGain();
+                        
+                        osc.connect(gain);
+                        gain.connect(masterGain);
+                        
+                        osc.type = 'sine';
+                        osc.frequency.value = note.freq;
+                        
+                        const startTime = now + note.time;
+                        const duration = note.time === 0.85 ? 0.5 : 0.25;
+                        
+                        gain.gain.setValueAtTime(0.15, startTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+                        
+                        osc.start(startTime);
+                        osc.stop(startTime + duration);
+                    });
+                    
+                    // Add a second layer for richness (harmony)
+                    const harmonyNotes = [
+                        { freq: 659.25, time: 0.36 },  // E5
+                        { freq: 783.99, time: 0.5 },   // G5
+                        { freq: 1046.50, time: 0.65 }, // C6
+                        { freq: 1318.51, time: 0.85 }  // E6
+                    ];
+                    
+                    harmonyNotes.forEach((note) => {
+                        const osc = audioContext.createOscillator();
+                        const gain = audioContext.createGain();
+                        
+                        osc.connect(gain);
+                        gain.connect(masterGain);
+                        
+                        osc.type = 'triangle';
+                        osc.frequency.value = note.freq;
+                        
+                        const startTime = now + note.time;
+                        const duration = 0.3;
+                        
+                        gain.gain.setValueAtTime(0.08, startTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+                        
+                        osc.start(startTime);
+                        osc.stop(startTime + duration);
+                    });
+                    
+                    // Add a sparkling high-frequency shimmer at the end
+                    const shimmerOsc = audioContext.createOscillator();
+                    const shimmerGain = audioContext.createGain();
+                    shimmerOsc.connect(shimmerGain);
+                    shimmerGain.connect(masterGain);
+                    shimmerOsc.type = 'sine';
+                    shimmerOsc.frequency.value = 2637.02; // E7
+                    
+                    shimmerGain.gain.setValueAtTime(0, now + 0.95);
+                    shimmerGain.gain.linearRampToValueAtTime(0.1, now + 1.0);
+                    shimmerGain.gain.exponentialRampToValueAtTime(0.01, now + 1.3);
+                    
+                    shimmerOsc.start(now + 0.95);
+                    shimmerOsc.stop(now + 1.3);
+                }
+                else if (type === 'levelUp') {
+                    // Level up sound
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(1046.50, audioContext.currentTime + 0.5);
+                    oscillator.type = 'sine';
+                    
+                    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                    
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.5);
+                }
+            } catch (e) {
+                console.log("Audio context not supported");
+            }
+        }
+        
+        // Initialize Game
+        function initGame() {
+            // Start with solved puzzle
+            gameState.tiles = [];
+            for (let i = 1; i <= gameState.size * gameState.size - 1; i++) {
+                gameState.tiles.push(i);
+            }
+            gameState.tiles.push(null);
+            
+            // Reset stats
+            gameState.moves = 0;
+            gameState.time = 0;
+            gameState.emptyIndex = gameState.size * gameState.size - 1;
+            gameState.isPlaying = false;
+            gameState.hasBeenShuffled = false;
+            
+            // Clear timer
+            if (gameState.timer) {
+                clearInterval(gameState.timer);
+                gameState.timer = null;
+            }
+            
+            // Update UI - Start with 100% progress
+            currentLevelDisplay.textContent = gameState.currentLevel;
+            updateStats();
+            renderTiles();
+            
+            // Hide messages
+            winMessage.classList.remove('active');
+            shuffleMessage.classList.remove('active');
+            
+            // Update target moves display
+            const level = difficultyLevels[gameState.currentLevel - 1];
+            targetMovesEl.textContent = level.targetMoves;
+            
+            // Set initial progress to 100% (solved)
+            updateProgress();
+        }
+        
+        // Render Tiles
+        function renderTiles() {
+            puzzleGrid.innerHTML = '';
+            
+            for (let i = 0; i < gameState.tiles.length; i++) {
+                const tileValue = gameState.tiles[i];
+                const tile = document.createElement('div');
+                
+                tile.className = 'tile';
+                if (tileValue === null) {
+                    tile.classList.add('empty');
+                    tile.textContent = '';
+                } else {
+                    tile.textContent = tileValue;
+                    
+                    // Check if tile is in correct position
+                    if (tileValue === i + 1) {
+                        tile.classList.add('correct');
+                    }
+                    
+                    // Add touch event
+                    tile.addEventListener('click', () => handleTileClick(i));
+                }
+                
+                puzzleGrid.appendChild(tile);
+            }
+            
+            updateProgress();
+        }
+        
+        // Handle Tile Click
+        function handleTileClick(index) {
+            // Check if game has been shuffled
+            if (!gameState.hasBeenShuffled) {
+                showShuffleMessage();
+                return;
+            }
+            
+            if (checkWin()) return;
+            
+            if (isAdjacentToEmpty(index)) {
+                // Play slide sound
+                playSound('slide');
+                
+                // Start timer on first move
+                if (!gameState.isPlaying) {
+                    startTimer();
+                    gameState.isPlaying = true;
+                }
+                
+                // Swap tiles
+                swapTiles(index, gameState.emptyIndex);
+                gameState.emptyIndex = index;
+                gameState.moves++;
+                
+                updateStats();
+                renderTiles();
+                
+                if (checkWin()) {
+                    endLevel();
+                }
+            }
+        }
+        
+        // Show shuffle message
+        function showShuffleMessage() {
+            playSound('click');
+            shuffleMessage.classList.add('active');
+        }
+        
+        // Hide shuffle message
+        function hideShuffleMessage() {
+            playSound('click');
+            shuffleMessage.classList.remove('active');
+        }
+        
+        // Check if adjacent to empty
+        function isAdjacentToEmpty(index) {
+            const row = Math.floor(index / gameState.size);
+            const col = index % gameState.size;
+            const emptyRow = Math.floor(gameState.emptyIndex / gameState.size);
+            const emptyCol = gameState.emptyIndex % gameState.size;
+            
+            return (Math.abs(row - emptyRow) === 1 && col === emptyCol) ||
+                   (Math.abs(col - emptyCol) === 1 && row === emptyRow);
+        }
+        
+        // Swap Tiles
+        function swapTiles(index1, index2) {
+            const temp = gameState.tiles[index1];
+            gameState.tiles[index1] = gameState.tiles[index2];
+            gameState.tiles[index2] = temp;
+        }
+        
+        // Check Win
+        function checkWin() {
+            for (let i = 0; i < gameState.winState.length; i++) {
+                if (gameState.tiles[i] !== gameState.winState[i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        // Update Stats
+        function updateStats() {
+            moveCountEl.textContent = gameState.moves;
+            updateProgress();
+        }
+        
+        // Update Progress
+        function updateProgress() {
+            let correctCount = 0;
+            for (let i = 0; i < gameState.tiles.length - 1; i++) {
+                if (gameState.tiles[i] === i + 1) {
+                    correctCount++;
+                }
+            }
+            
+            const progress = Math.round((correctCount / 15) * 100);
+            progressFill.style.width = progress + '%';
+            progressPercent.textContent = progress + '%';
+            tilesCorrectEl.textContent = `${correctCount}/15`;
+        }
+        
+        // Start Timer
+        function startTimer() {
+            if (gameState.timer) {
+                clearInterval(gameState.timer);
+            }
+            
+            gameState.timer = setInterval(() => {
+                gameState.time++;
+                updateTimerDisplay();
+            }, 1000);
+        }
+        
+        // Update Timer Display
+        function updateTimerDisplay() {
+            const minutes = Math.floor(gameState.time / 60);
+            const seconds = gameState.time % 60;
+            timeEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Manual Shuffle Button - Sets progress to 0%
+        function shuffleTiles() {
+            playSound('click');
+            
+            // Mark that user has shuffled
+            gameState.hasBeenShuffled = true;
+            
+            if (!gameState.isPlaying) {
+                gameState.isPlaying = true;
+                startTimer();
+            }
+            
+            // Reset moves and time
+            gameState.moves = 0;
+            gameState.time = 0;
+            updateStats();
+            updateTimerDisplay();
+            
+            const level = difficultyLevels[gameState.currentLevel - 1];
+            
+            // Apply multiple random moves for proper shuffling
+            for (let i = 0; i < level.shuffleMoves; i++) {
+                const adjacentTiles = [];
+                for (let j = 0; j < gameState.tiles.length; j++) {
+                    if (isAdjacentToEmpty(j)) {
+                        adjacentTiles.push(j);
+                    }
+                }
+                
+                if (adjacentTiles.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * adjacentTiles.length);
+                    const tileIndex = adjacentTiles[randomIndex];
+                    
+                    swapTiles(tileIndex, gameState.emptyIndex);
+                    gameState.emptyIndex = tileIndex;
+                }
+            }
+            
+            // After shuffle, progress should be 0% (puzzle is scrambled)
+            updateStats();
+            renderTiles();
+            
+            // Ensure progress is 0% after shuffle
+            setTimeout(() => {
+                updateProgress();
+            }, 100);
+        }
+        
+        // Reset Level (Restart current level) - Goes back to solved state
+        function resetLevel() {
+            playSound('click');
+            
+            // Stop timer if running
+            if (gameState.timer) {
+                clearInterval(gameState.timer);
+                gameState.timer = null;
+            }
+            
+            // Reset game state to solved position
+            gameState.tiles = [];
+            for (let i = 1; i <= gameState.size * gameState.size - 1; i++) {
+                gameState.tiles.push(i);
+            }
+            gameState.tiles.push(null);
+            
+            gameState.emptyIndex = gameState.size * gameState.size - 1;
+            gameState.moves = 0;
+            gameState.time = 0;
+            gameState.isPlaying = false;
+            gameState.hasBeenShuffled = false;
+            
+            // Update display
+            updateStats();
+            updateTimerDisplay();
+            renderTiles();
+        }
+        
+        // Load Levels Grid with Lock/Unlock System
+        function loadLevelsGrid() {
+            levelsGrid.innerHTML = '';
+            
+            difficultyLevels.forEach((level, index) => {
+                const button = document.createElement('button');
+                button.className = 'level-btn';
+                
+                const levelNumber = index + 1;
+                const isUnlocked = levelNumber <= gameState.unlockedLevels;
+                const isActive = gameState.currentLevel === levelNumber;
+                const isCompleted = gameState.levelCompleted[index];
+                
+                // Set button state
+                if (!isUnlocked) {
+                    button.classList.add('locked');
+                } else if (isActive) {
+                    button.classList.add('active');
+                }
+                if (isCompleted) {
+                    button.classList.add('completed');
+                }
+                
+                button.innerHTML = `
+                    <div class="level-number">${levelNumber}</div>
+                    <div class="level-name">${level.name}</div>
+                `;
+                
+                // Only add click event if unlocked
+                if (isUnlocked) {
+                    button.addEventListener('click', () => {
+                        playSound('click');
+                        gameState.currentLevel = levelNumber;
+                        initGame();
+                        showPage('game');
+                    });
+                }
+                
+                levelsGrid.appendChild(button);
+            });
+        }
+        
+        // Show Level Complete Animation
+        function showLevelCompleteAnimation() {
+            levelCompleteText.textContent = `LEVEL ${gameState.currentLevel} COMPLETE!`;
+            levelCompleteAnim.classList.add('active');
+            
+            setTimeout(() => {
+                levelCompleteAnim.classList.remove('active');
+            }, 1500);
+        }
+        
+        // Unlock Next Level
+        function unlockNextLevel() {
+            if (gameState.currentLevel < difficultyLevels.length) {
+                const nextLevel = gameState.currentLevel + 1;
+                if (nextLevel > gameState.unlockedLevels) {
+                    gameState.unlockedLevels = nextLevel;
+                    playSound('levelUp');
+                }
+            }
+        }
+        
+        // End Level
+        function endLevel() {
+            playSound('win');
+            
+            if (gameState.timer) {
+                clearInterval(gameState.timer);
+                gameState.timer = null;
+            }
+            
+            const levelTime = gameState.time;
+            const levelIndex = gameState.currentLevel - 1;
+            
+            // Update best scores
+            if (gameState.bestMoves[levelIndex] === null || gameState.moves < gameState.bestMoves[levelIndex]) {
+                gameState.bestMoves[levelIndex] = gameState.moves;
+            }
+            
+            if (gameState.bestTimes[levelIndex] === null || levelTime < gameState.bestTimes[levelIndex]) {
+                gameState.bestTimes[levelIndex] = levelTime;
+            }
+            
+            // Mark as completed
+            gameState.levelCompleted[levelIndex] = true;
+            
+            // Unlock next level
+            unlockNextLevel();
+            
+            // Show level complete animation
+            showLevelCompleteAnimation();
+            
+            // Show win message after animation
+            setTimeout(() => {
+                // Show win message
+                const level = difficultyLevels[levelIndex];
+                finalLevelEl.textContent = gameState.currentLevel;
+                finalMovesEl.textContent = gameState.moves;
+                finalTargetMovesEl.textContent = level.targetMoves;
+                finalTimeEl.textContent = timeEl.textContent;
+                
+                // Performance rating
+                let rating = "Excellent!";
+                if (gameState.moves > level.targetMoves * 1.2) rating = "Good";
+                if (gameState.moves > level.targetMoves * 1.5) rating = "Fair";
+                if (levelTime > level.targetTime * 1.5) rating = "Time to improve!";
+                
+                performanceRating.textContent = `Performance: ${rating}`;
+                
+                // Show "YOU WIN!" for the final level
+                if (gameState.currentLevel === difficultyLevels.length) {
+                    document.getElementById('win-title').textContent = "YOU WIN!";
+                } else {
+                    document.getElementById('win-title').textContent = "LEVEL COMPLETE!";
+                }
+                
+                winMessage.classList.add('active');
+                
+                // Save data
+                saveData();
+            }, 1600);
+        }
+        
+        // Next Level
+        function nextLevel() {
+            playSound('click');
+            
+            if (gameState.currentLevel < difficultyLevels.length && gameState.currentLevel < gameState.unlockedLevels) {
+                gameState.currentLevel++;
+                initGame();
+                winMessage.classList.remove('active');
+                showPage('game');
+            } else {
+                // No more levels or level not unlocked
+                winMessage.classList.remove('active');
+                goToHome();
+            }
+        }
+        
+        // Go to Home from win message
+        function goHomeFromWin() {
+            playSound('click');
+            winMessage.classList.remove('active');
+            goToHome();
+        }
+        
+        // Load Saved Data
+        function loadData() {
+            const savedBestMoves = localStorage.getItem('slidePuzzleMobileBestMoves');
+            const savedBestTimes = localStorage.getItem('slidePuzzleMobileBestTimes');
+            const savedLevelCompleted = localStorage.getItem('slidePuzzleMobileLevelCompleted');
+            const savedUnlockedLevels = localStorage.getItem('slidePuzzleUnlockedLevels');
+            const savedSound = localStorage.getItem('slidePuzzleSound');
+            
+            if (savedBestMoves) gameState.bestMoves = JSON.parse(savedBestMoves);
+            if (savedBestTimes) gameState.bestTimes = JSON.parse(savedBestTimes);
+            if (savedLevelCompleted) gameState.levelCompleted = JSON.parse(savedLevelCompleted);
+            if (savedUnlockedLevels) gameState.unlockedLevels = parseInt(savedUnlockedLevels) || 1;
+            if (savedSound !== null) gameState.soundEnabled = savedSound === 'true';
+            
+            // Update sound toggle UI
+            soundToggle.classList.toggle('active', gameState.soundEnabled);
+            soundIcon.textContent = gameState.soundEnabled ? '🔊' : '🔇';
+            soundText.textContent = gameState.soundEnabled ? 'SOUND ON' : 'SOUND OFF';
+        }
+        
+        // Save Data
+        function saveData() {
+            localStorage.setItem('slidePuzzleMobileBestMoves', JSON.stringify(gameState.bestMoves));
+            localStorage.setItem('slidePuzzleMobileBestTimes', JSON.stringify(gameState.bestTimes));
+            localStorage.setItem('slidePuzzleMobileLevelCompleted', JSON.stringify(gameState.levelCompleted));
+            localStorage.setItem('slidePuzzleUnlockedLevels', gameState.unlockedLevels.toString());
+        }
+        
+        // Initialize on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            
+            // Button Event Listeners
+            document.getElementById('shuffle-btn').addEventListener('click', shuffleTiles);
+            document.getElementById('reset-btn').addEventListener('click', resetLevel);
+            soundToggle.addEventListener('click', toggleSound);
+            document.getElementById('next-level-btn').addEventListener('click', nextLevel);
+            document.getElementById('home-win-btn').addEventListener('click', goHomeFromWin);
+            
+            // Initialize game but don't show it yet
+            initGame();
+            
+            // Show home page by default
+            showPage('home');
+        });
     </script>
 </body>
 </html>
